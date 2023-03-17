@@ -1,5 +1,5 @@
 # Javataire
-1. Team Name: Solo Queue
+1. Team Name: Solo Queue \n
    Team Members: Jacob Chung
 
 Project Outline:
