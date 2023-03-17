@@ -4,7 +4,7 @@
 
 Project Outline:
 
-2. Being on a team by myself, I thought it would only make sense to create a solitaire application. Using JavaFX, I will implement the classic card game with fully-functional UI and the singleplayer gameplay it is known for. Solitaire is 
+2. Being on a team by myself, I thought it would only make sense to create a solitaire application. Using JavaFX, I will implement the classic card game with fully-functional UI and the singleplayer gameplay it is known for. 
 
 3. UML diagram will be included as an image attachment on Moodle.
 
