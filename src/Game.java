@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -140,15 +142,104 @@ public class Game extends Application
      */
     public void playGame(Stage primaryStage)
     {
-        Stage playStage = new Stage();
+        Stage playStage = new Stage(); // Stage used for initializing game.
+        Button btStart = new Button("Start");
+        GridPane gamePane = new GridPane();
 
-        // Create a scene and place it in the stage
-        // Scene scene = new Scene(pane, 800, 600);
-        playStage.setTitle("Current Session"); // Set the stage title
-        // primaryStage.setScene(scene); // Place the scene in the stage
+        gamePane.setHgap(5);
+        gamePane.setVgap(30);
+
+        // Create text for intro frame.
+        Text title = new Text("Click the button to create a deck.");
+        title.setFont(Font.font("Times New Roman", FontWeight.BOLD, 
+        FontPosture.REGULAR, 20));
+        gamePane.add(title, 0, 0);
+        GridPane.setHalignment(title, HPos.CENTER);
+
+        gamePane.add(btStart, 0, 1);
+        GridPane.setHalignment(btStart, HPos.CENTER);
+
+        // Set properties for UI.
+        gamePane.setAlignment(Pos.CENTER);
+
+        Scene introScene = new Scene(gamePane, 800, 600);
+        playStage.setTitle("New Game"); // Set the stage title
+        playStage.setScene(introScene); // Place the scene in the stage
         primaryStage.hide();
         playStage.show(); // Display the stage 
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // Create separate stage and scene for ingame sessions.
+        Stage sessionStage = new Stage(); // Used for in-progress sessions.
+        GridPane sessionPane = new GridPane();
+
+        sessionPane.setHgap(5);
+        sessionPane.setVgap(30);
+
+        Button btMenu = new Button();
+        btMenu.setText("Menu");
+        sessionPane.add(btMenu, 0, 1);
+        GridPane.setHalignment(btMenu, HPos.LEFT);
+        
+        sessionStage.setTitle("Current Session");
+        Scene sessionScene = new Scene(sessionPane, 1000, 600);
+        sessionStage.setScene(sessionScene);
+
+        // Once the start button is clicked, a new game is loaded.
+        btStart.setOnAction(e -> 
+            {
+                playStage.hide();
+                sessionStage.show();
+            });
+
+        btMenu.setOnAction(e -> showMenu(sessionStage, primaryStage));
     }
+
+    /**
+     * Handles bringing up the menu during a session.
+     */
+    public void showMenu(Stage currentStage, Stage primaryStage)
+    {
+        Stage menuStage = new Stage();
+        Button btTutorial = new Button("Tutorial");
+        Button btRestart = new Button("Restart");
+        Button btQuit = new Button("Quit");
+        GridPane menuPane = new GridPane();
+
+        menuPane.setHgap(5);
+        menuPane.setVgap(30);
+
+        menuPane.add(btTutorial, 0, 1);
+        GridPane.setHalignment(btTutorial, HPos.CENTER);
+        menuPane.add(btRestart, 0, 2);
+        GridPane.setHalignment(btRestart, HPos.CENTER);
+        menuPane.add(btQuit, 0, 3);
+        GridPane.setHalignment(btQuit, HPos.CENTER);
+
+        menuPane.setAlignment(Pos.TOP_CENTER);
+
+        menuStage.setTitle("Menu");
+        Scene menuScene = new Scene(menuPane, 300, 250);
+        menuStage.setScene(menuScene);
+        menuStage.show();
+
+        // Handle events for each button.
+        btTutorial.setOnAction(e -> displayHelp());
+        btRestart.setOnAction(e -> 
+        {
+            currentStage.hide();
+            menuStage.hide();
+            playGame(primaryStage);
+        });
+        btQuit.setOnAction(e -> 
+        {
+            currentStage.hide();
+            menuStage.hide();
+            start(primaryStage);
+        });
+    }
+    
     public static void main(String[] args)
     {
         launch(args);
