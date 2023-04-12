@@ -1,14 +1,13 @@
+package javataire;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -101,10 +100,12 @@ public class Game extends Application
 
         Button playButton = new Button(">");
         playButton.setOnAction(e -> {
-        if (playButton.getText().equals(">")) {
+        if (playButton.getText().equals(">")) 
+        {
             mediaPlayer.play();
             playButton.setText("||");
-        } else {
+        } else 
+        {
             mediaPlayer.pause();
             playButton.setText(">");
         }
@@ -173,17 +174,26 @@ public class Game extends Application
         // Create separate stage and scene for ingame sessions.
         Stage sessionStage = new Stage(); // Used for in-progress sessions.
         GridPane sessionPane = new GridPane();
+        ToolBar toolbar = new ToolBar();
 
         sessionPane.setHgap(5);
         sessionPane.setVgap(30);
 
+        // Create buttons for user control and add them to a toolbar.
         Button btMenu = new Button();
+        Button btMove = new Button();
         btMenu.setText("Menu");
-        sessionPane.add(btMenu, 0, 1);
-        GridPane.setHalignment(btMenu, HPos.LEFT);
+        btMove.setText("Move");
+        toolbar.getItems().add(btMenu);
+        toolbar.getItems().add(new Separator());
+        toolbar.getItems().add(btMove);
+        toolbar.getItems().add(new Separator());
+        
+        GridPane.setHalignment(btMenu, HPos.RIGHT);
+        VBox vBox = new VBox(toolbar);
         
         sessionStage.setTitle("Current Session");
-        Scene sessionScene = new Scene(sessionPane, 1000, 600);
+        Scene sessionScene = new Scene(vBox, 1000, 600);
         sessionStage.setScene(sessionScene);
 
         // Once the start button is clicked, a new game is loaded.
@@ -191,6 +201,10 @@ public class Game extends Application
             {
                 playStage.hide();
                 sessionStage.show();
+                Deck deck = new Deck();
+                deck.initialize();
+                deck.shuffle();
+                drawCards(playStage, deck);
             });
 
         btMenu.setOnAction(e -> showMenu(sessionStage, primaryStage));
@@ -240,6 +254,17 @@ public class Game extends Application
         });
     }
     
+    /*
+     * TO DO: check if putting menu and other stuff from playStage works better in here.
+     */
+    public void drawCards(Stage playStage, Deck deck)
+    {
+        GridPane cardPane = new GridPane();
+        Scene scene = playStage.getScene();
+
+        HBox cardBox = new HBox();
+    } 
+
     public static void main(String[] args)
     {
         launch(args);

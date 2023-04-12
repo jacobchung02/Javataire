@@ -14,14 +14,14 @@
             "type": "java",
             "name": "App",
             "request": "launch",
-            "mainClass": "Game",
+            "mainClass": "javataire.Game",
             "projectName": "Javataire_ecf84e2a"
         },
         {
             "type": "java",
             "name": "FX",
             "request": "launch",
-            "mainClass": "Game",
+            "mainClass": "javataire.Game",
             "projectName": "Javataire_ecf84e2a",
             "vmArgs": "--module-path c:\\Users\\jacob\\Documents\\javafx-sdk-19.0.2.1\\lib --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.swing,javafx.media,javafx.base,javafx.web"
         }
