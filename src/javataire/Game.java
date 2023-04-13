@@ -1,6 +1,6 @@
 package javataire;
 import java.util.ArrayList;
-
+import java.util.Stack;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.HPos;
@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +43,9 @@ public class Game extends Application
     public static final String RES_PATH = "/javataire/resources/";
 
     @Override // Override the start method in the Application class.
+    /**
+     * Creates initial Stage and shows the main title screen.
+     */
     public void start(Stage primaryStage) 
     {  
         GridPane gridPane = new GridPane();
@@ -201,6 +205,7 @@ public class Game extends Application
                 Deck deck = new Deck();
                 deck.initialize();
                 deck.shuffle();
+                deck.createTableau();
                 sessionStage.setTitle("Current Session");
 
                 VBox cardArea = new VBox();
@@ -209,10 +214,10 @@ public class Game extends Application
 
                 Scene sessionScene = new Scene(root, 935, 600);
                 sessionStage.setScene(sessionScene);
-            });
 
-        btMenu.setOnAction(e -> showMenu(sessionStage, primaryStage));
-        // btMove.setOnAction(e- > "");
+                btMenu.setOnAction(e2 -> showMenu(sessionStage, primaryStage));
+                btMove.setOnAction(e3 -> startMove(deck));
+            });
     }
 
     /**
@@ -260,7 +265,7 @@ public class Game extends Application
     }
     
     /*
-     * Draws cards onto the scene.
+     * Draws cards onto the scene based on cards in stock, waste, tableau, and foundations.
      */
     public VBox drawCards(Deck deck)
     {
@@ -341,13 +346,22 @@ public class Game extends Application
 
         // Place each card for row 1 into hBox2
         ArrayList<ImageView> row1 = new ArrayList<ImageView>();
+        Stack<Card> tableau1 = deck.tableau.get(0);  // Get current tableau for this row.
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
-            if (i == 0)  // Place a card from the deck in its corresponding spot.
+            if (i == 0)  // Flip the correct card out of the tableau.
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau1.get(i).getName() + ".png"));
+                tableau1.get(i).flip();
+            }
+            else if (i < tableau1.size() && i != 0)
+            {
+                if(tableau1.get(i - 1).isFlipped())
+                {
+                    curr.setImage(new Image(RES_PATH + tableau1.get(i).getName() + ".png"));
+                }
             }
             else
             {
@@ -362,6 +376,8 @@ public class Game extends Application
 
         // Place each card for row 2 into hBox3
         ArrayList<ImageView> row2 = new ArrayList<ImageView>();
+        Stack<Card> tableau2 = deck.tableau.get(1);  
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -374,8 +390,7 @@ public class Game extends Application
             }
             else if (i == 1)
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau2.get(i).getName() + ".png"));
             }
             else
             {
@@ -387,6 +402,8 @@ public class Game extends Application
 
         // Place each card for row 3 into hBox4
         ArrayList<ImageView> row3 = new ArrayList<ImageView>();
+        Stack<Card> tableau3 = deck.tableau.get(2);  
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -399,8 +416,7 @@ public class Game extends Application
             }
             else if (i == 2)
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau3.get(i).getName() + ".png"));
             }
             else
             {
@@ -412,6 +428,8 @@ public class Game extends Application
 
         // Place each card for row 4 into hBox5
         ArrayList<ImageView> row4 = new ArrayList<ImageView>();
+        Stack<Card> tableau4 = deck.tableau.get(3);  
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -424,8 +442,7 @@ public class Game extends Application
             }
             else if (i == 3)
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau4.get(i).getName() + ".png"));
             }
             else
             {
@@ -437,6 +454,8 @@ public class Game extends Application
 
         // Place each card for row 5 into hBox6
         ArrayList<ImageView> row5 = new ArrayList<ImageView>();
+        Stack<Card> tableau5 = deck.tableau.get(4);  
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -449,8 +468,7 @@ public class Game extends Application
             }
             else if (i == 4)
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau5.get(i).getName() + ".png"));
             }
             else
             {
@@ -462,6 +480,8 @@ public class Game extends Application
 
         // Place each card for row 6 into hBox7
         ArrayList<ImageView> row6 = new ArrayList<ImageView>();
+        Stack<Card> tableau6 = deck.tableau.get(5);  
+
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -474,8 +494,7 @@ public class Game extends Application
             }
             else if (i == 5)
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau6.get(i).getName() + ".png"));
             }
             else
             {
@@ -487,6 +506,8 @@ public class Game extends Application
 
         // Place each card for row 7 into hBox8
         ArrayList<ImageView> row7 = new ArrayList<ImageView>();
+        Stack<Card> tableau7 = deck.tableau.get(6);  
+        
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
@@ -499,8 +520,7 @@ public class Game extends Application
             }
             else
             {
-                Card flipped = deck.placeDown();
-                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+                curr.setImage(new Image(RES_PATH + tableau7.get(i).getName() + ".png"));
             }
             hBox8.getChildren().add(curr);
             row7.add(curr);
@@ -520,6 +540,56 @@ public class Game extends Application
         vBox.getChildren().addAll(stack);
         return vBox;
     } 
+
+    /**
+     * Opens a pane for setting a move and relays info to executeMove();
+     * based on user input in the text fields.
+     */
+    public void startMove(Deck deck)
+    {
+        GridPane movePane = new GridPane();
+        TextField tfTargetCol = new TextField();
+        TextField tfTargetRow = new TextField();
+        TextField tfDestCol = new TextField();
+        Button btGo = new Button("Go!");
+        Stage moveStage = new Stage();
+
+        // Create UI
+        movePane.setHgap(5);
+        movePane.setVgap(30);
+        movePane.add(new Label("Target column:"), 0, 0);
+        movePane.add(tfTargetCol, 1, 0);
+        movePane.add(new Label("Target row:"), 0, 1);
+        movePane.add(tfTargetRow, 1, 1);
+        movePane.add(new Label("Destination column:"), 0, 2);
+        movePane.add(tfDestCol, 1, 2);
+        movePane.add(btGo, 1, 3);
+
+        // Set properties for UI
+        movePane.setAlignment(Pos.CENTER);
+        GridPane.setHalignment(btGo, HPos.CENTER);
+
+        // Create a scene and place it in the stage
+        Scene scene = new Scene(movePane, 280, 280);
+        moveStage.setTitle("Move"); // Set title
+        moveStage.setScene(scene); // Place the scene in the stage
+        moveStage.show(); // Display the stage
+
+        // Convert text fields to Integers and attempt to make the move.
+        btGo.setOnAction(e -> executeMove(deck, Integer.parseInt(tfTargetRow.getText()), Integer.parseInt(tfDestCol.getText())));
+    }
+
+    /**
+     * Moves the desired Card to a location. If it cannot be done, tell the
+     * user to try again. [This needs to be fixed (implement move checking correctly)]
+     */
+    public void executeMove(Deck deck, Integer targetRow, Integer destCol)
+    {
+        Card targetCard = deck.tableau.get(targetRow - 1).pop();  
+
+        deck.tableau.get(destCol).add(targetCard);
+        drawCards(deck);
+    }
 
     public static void main(String[] args)
     {

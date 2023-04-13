@@ -34,14 +34,14 @@ class Card
 	// Getter for Color. Either black or red depending on Suit.
 	Color getColor()
 	{
-		if (suit == Suit.CLUBS || suit == Suit.SPADES)
-		{
-			return Color.BLACK;
-		} 
-		else 
-		{
-			return Color.RED;
-		}
+		if (suit == Suit.CLUBS || suit == Suit.SPADES) return Color.BLACK;
+		else return Color.RED;
+	}
+
+	// Getter for name of Card. Used for drawing images.
+	String getName() 
+	{
+		return value.toString() + "_of_" + suit.toString().toLowerCase();
 	}
 
 	// Flip Card to make it visible.
@@ -66,11 +66,5 @@ class Card
 	boolean isSelected()
 	{
 		return selected;
-	}
-
-	// Getter for name of Card. Used for drawing images.
-	String getName() 
-	{
-		return value.toString() + "_of_" + suit.toString().toLowerCase();
 	}
 }
