@@ -104,7 +104,7 @@ class Deck
     /**
      * Check if placing child over parent would work in the foundations.
 	 */
-	public boolean isValidFoundationsMove(Card parent, Card child) 
+	public boolean checkFoundationMove(Card parent, Card child) 
     {
 		if (parent == null) 
         {
@@ -122,9 +122,10 @@ class Deck
 	}
 
     /**
-     * Check if placing child over parent would work in the tableau.
+     * Check if placing one card over another would work in the tableau.
+	 * Using .ordinal()  
      */
-	public boolean isValidTableauMove(Card parent, Card child) 
+	public boolean checkTableauMove(Card parent, Card child) 
     {
 		if (parent == null) 
         {
@@ -148,6 +149,7 @@ class Deck
     {
 		for (Stack<Card> stack : foundations) 
         {
+			// Stack size == 13 for a win.
 			if (stack.size() != 13) 
             {
 				return false;
@@ -160,7 +162,7 @@ class Deck
      * Move the selected card to the specified Stack.
      * Returns false until win condition is satisfied.
      */
-	public boolean moveCards(Stack<Card> stack) 
+	public void moveCards(Stack<Card> stack) 
     {
 		for (Card card : selected) 
         {
@@ -175,7 +177,6 @@ class Deck
 			}
 			stack.push(card);
 		}
-        return isWon();
 	}
 
     /**
@@ -188,9 +189,9 @@ class Deck
 	}
 
     /**
-     * Revert Card's status to unselected and remove selected from its stack.
+     * Revert Cards' statuses to unselected and remove selected from its stack.
      */
-	public void deselect() 
+	public void deselectCards() 
     {
 		if (!selected.isEmpty()) 
         {
