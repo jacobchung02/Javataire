@@ -1,7 +1,10 @@
 package javataire;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -172,12 +176,10 @@ public class Game extends Application
         ///////////////////////////////////////////////////////////////////////
 
         // Create separate stage and scene for ingame sessions.
-        Stage sessionStage = new Stage(); // Used for in-progress sessions.
-        GridPane sessionPane = new GridPane();
+        Stage sessionStage = new Stage(); 
         ToolBar toolbar = new ToolBar();
-
-        sessionPane.setHgap(5);
-        sessionPane.setVgap(30);
+        VBox root = new VBox();
+        root.setPadding(new Insets(5));
 
         // Create buttons for user control and add them to a toolbar.
         Button btMenu = new Button();
@@ -188,14 +190,7 @@ public class Game extends Application
         toolbar.getItems().add(new Separator());
         toolbar.getItems().add(btMove);
         toolbar.getItems().add(new Separator());
-        
-        GridPane.setHalignment(btMenu, HPos.RIGHT);
-        VBox vBox = new VBox(toolbar);
-        
-        sessionStage.setTitle("Current Session");
-        Scene sessionScene = new Scene(vBox, 1000, 600);
-        sessionStage.setScene(sessionScene);
-
+    
         // Once the start button is clicked, a new game is loaded.
         btStart.setOnAction(e -> 
             {
@@ -204,10 +199,18 @@ public class Game extends Application
                 Deck deck = new Deck();
                 deck.initialize();
                 deck.shuffle();
-                drawCards(playStage, deck);
+                sessionStage.setTitle("Current Session");
+
+                VBox cardArea = new VBox();
+                cardArea = drawCards(deck);
+                root.getChildren().addAll(toolbar, cardArea);
+
+                Scene sessionScene = new Scene(root, 935, 600);
+                sessionStage.setScene(sessionScene);
             });
 
         btMenu.setOnAction(e -> showMenu(sessionStage, primaryStage));
+        // btMove.setOnAction(e- > "");
     }
 
     /**
@@ -255,14 +258,231 @@ public class Game extends Application
     }
     
     /*
-     * TO DO: check if putting menu and other stuff from playStage works better in here.
+     * Draws cards onto the scene.
      */
-    public void drawCards(Stage playStage, Deck deck)
+    public VBox drawCards(Deck deck)
     {
-        GridPane cardPane = new GridPane();
-        Scene scene = playStage.getScene();
+        // Set up HBoxes for each row of cards.
+        HBox hBox1 = new HBox();
+        HBox hBox2 = new HBox();
+        HBox hBox3 = new HBox();
+        HBox hBox4 = new HBox();
+        HBox hBox5 = new HBox();
+        HBox hBox6 = new HBox();
+        HBox hBox7 = new HBox();
+        HBox hBox8 = new HBox();
 
-        HBox cardBox = new HBox();
+        // Holds each HBox for every line of cards.
+        VBox vBox = new VBox();  
+
+        // Stack
+        StackPane stack = new StackPane(); 
+
+        vBox.setSpacing(5);
+
+        // Load stock card image and add it to the box.
+        Image stockImage = new Image("/javataire/resources/card_back.png");
+        ImageView stockImageView = new ImageView(stockImage);   
+        ArrayList<ImageView> foundationArray = new ArrayList<ImageView>();
+        stockImageView.setFitWidth(100);
+        stockImageView.setFitHeight(150);
+        stockImageView.setImage(stockImage);
+
+        hBox1.setMargin(stockImageView, new Insets(0, 20, 0, 0));
+
+        // Load the waste card image and add it to the box.
+        Image wasteImage = new Image("/javataire/resources/cardoutline.png");
+        ImageView wasteImageView = new ImageView(wasteImage);
+        wasteImageView.setFitWidth(100);
+        wasteImageView.setFitHeight(150);
+        wasteImageView.setImage(wasteImage);
+
+        hBox1.setMargin(wasteImageView, new Insets(0, 140, 0, 0));
+
+        // Load foundation card images.
+        Image foundationImage1 = new Image("/javataire/resources/cardoutline.png");
+        ImageView foundationImage1View = new ImageView(foundationImage1);
+        foundationImage1View.setFitWidth(100);
+        foundationImage1View.setFitHeight(150);
+        foundationImage1View.setImage(foundationImage1);
+        foundationArray.add(foundationImage1View);
+
+        hBox1.setMargin(foundationImage1View, new Insets(0, 20, 0, 0));
+
+        ImageView foundationImage2View = new ImageView(foundationImage1);
+        foundationImage2View.setFitWidth(100);
+        foundationImage2View.setFitHeight(150);
+        foundationImage2View.setImage(foundationImage1);
+        foundationArray.add(foundationImage2View);
+
+        hBox1.setMargin(foundationImage2View, new Insets(0, 20, 0, 0));
+
+        ImageView foundationImage3View = new ImageView(foundationImage1);
+        foundationImage3View.setFitWidth(100);
+        foundationImage3View.setFitHeight(150);
+        foundationImage3View.setImage(foundationImage1);
+        foundationArray.add(foundationImage3View);
+
+        hBox1.setMargin(foundationImage3View, new Insets(0, 20, 0, 0));
+
+        ImageView foundationImage4View = new ImageView(foundationImage1);
+        foundationImage4View.setFitWidth(100);
+        foundationImage4View.setFitHeight(150);
+        foundationImage4View.setImage(foundationImage1);
+        foundationArray.add(foundationImage4View);
+
+        hBox1.setMargin(foundationImage4View, new Insets(0, 20, 0, 0));
+
+        // Add cards to the box for the top row.
+        hBox1.getChildren().addAll(stockImageView, wasteImageView, foundationImage1View, 
+        foundationImage2View, foundationImage3View, foundationImage4View);
+
+        // Place each card for row 1 into hBox2
+        ArrayList<ImageView> row1 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox2.setSpacing(20);
+            curr.setImage(stockImage);
+            hBox2.getChildren().add(curr);
+            row1.add(curr);
+        }
+
+        // Place each card for row 2 into hBox3
+        ArrayList<ImageView> row2 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox3.setSpacing(20);
+            if (i < 1)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox3.getChildren().add(curr);
+            row2.add(curr);
+        }
+
+        // Place each card for row 3 into hBox4
+        ArrayList<ImageView> row3 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox4.setSpacing(20);
+            if (i < 2)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox4.getChildren().add(curr);
+            row3.add(curr);
+        }
+
+        // Place each card for row 4 into hBox5
+        ArrayList<ImageView> row4 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox5.setSpacing(20);
+            if (i < 3)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox5.getChildren().add(curr);
+            row4.add(curr);
+        }
+
+        // Place each card for row 5 into hBox6
+        ArrayList<ImageView> row5 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox6.setSpacing(20);
+            if (i < 4)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox6.getChildren().add(curr);
+            row5.add(curr);
+        }
+
+        // Place each card for row 6 into hBox7
+        ArrayList<ImageView> row6 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox7.setSpacing(20);
+            if (i < 5)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox7.getChildren().add(curr);
+            row6.add(curr);
+        }
+
+        // Place each card for row 7 into hBox8
+        ArrayList<ImageView> row7 = new ArrayList<ImageView>();
+        for (int i = 0; i < 7; i++)
+        {
+            ImageView curr = new ImageView(stockImage);
+            curr.setFitWidth(100);
+            curr.setFitHeight(150);
+            hBox8.setSpacing(20);
+            if (i < 6)
+            {
+                curr.setImage(null);
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
+            hBox8.getChildren().add(curr);
+            row7.add(curr);
+        }
+
+        // Add each row of cards to the Stack.
+        stack.setMargin(hBox2, new Insets(165, 0, 0, 0));
+        stack.setMargin(hBox3, new Insets(185, 0, 0, 0));
+        stack.setMargin(hBox4, new Insets(205, 0, 0, 0));
+        stack.setMargin(hBox5, new Insets(225, 0, 0, 0));
+        stack.setMargin(hBox6, new Insets(245, 0, 0, 0));
+        stack.setMargin(hBox7, new Insets(265, 0, 0, 0));
+        stack.setMargin(hBox8, new Insets(285, 0, 0, 0));
+        stack.getChildren().addAll(hBox1, hBox2, hBox3, hBox4, hBox5, hBox6, hBox7, hBox8);
+
+        // Add each hBox to the vBox.
+        vBox.getChildren().addAll(stack);
+        return vBox;
     } 
 
     public static void main(String[] args)
