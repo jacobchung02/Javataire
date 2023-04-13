@@ -74,6 +74,14 @@ class Deck
 		}
 	}
 
+	/**
+	 * Returns card from the top of the deck. Used for setting cards down on the initial draw.
+	 */
+	public Card placeDown()
+	{
+		return stock.pop();
+	}
+
     /**
 	 * Flip the card at the top of the stock, then place it in the waste (face-up).
 	 */

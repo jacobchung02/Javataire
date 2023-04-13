@@ -39,6 +39,8 @@ public class Game extends Application
     public static final String MEDIA_URL = 
         "https://www.wikihow.com/video/6/60/Play+Solitaire+Step+0+Version+3.360p.mp4";
 
+    public static final String RES_PATH = "/javataire/resources/";
+
     @Override // Override the start method in the Application class.
     public void start(Stage primaryStage) 
     {  
@@ -272,10 +274,10 @@ public class Game extends Application
         HBox hBox7 = new HBox();
         HBox hBox8 = new HBox();
 
-        // Holds each HBox for every line of cards.
+        // This will be returned later once the StackPane is added to it.
         VBox vBox = new VBox();  
 
-        // Stack
+        // Stacks each HBox (row) of cards on top of each other.
         StackPane stack = new StackPane(); 
 
         vBox.setSpacing(5);
@@ -342,10 +344,18 @@ public class Game extends Application
         for (int i = 0; i < 7; i++)
         {
             ImageView curr = new ImageView(stockImage);
+            if (i == 0)  // Place a card from the deck in its corresponding spot.
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+            }
+            else
+            {
+                curr.setImage(stockImage);
+            }
             curr.setFitWidth(100);
             curr.setFitHeight(150);
             hBox2.setSpacing(20);
-            curr.setImage(stockImage);
             hBox2.getChildren().add(curr);
             row1.add(curr);
         }
@@ -361,6 +371,11 @@ public class Game extends Application
             if (i < 1)
             {
                 curr.setImage(null);
+            }
+            else if (i == 1)
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
             }
             else
             {
@@ -382,6 +397,11 @@ public class Game extends Application
             {
                 curr.setImage(null);
             }
+            else if (i == 2)
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+            }
             else
             {
                 curr.setImage(stockImage);
@@ -401,6 +421,11 @@ public class Game extends Application
             if (i < 3)
             {
                 curr.setImage(null);
+            }
+            else if (i == 3)
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
             }
             else
             {
@@ -422,6 +447,11 @@ public class Game extends Application
             {
                 curr.setImage(null);
             }
+            else if (i == 4)
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
+            }
             else
             {
                 curr.setImage(stockImage);
@@ -441,6 +471,11 @@ public class Game extends Application
             if (i < 5)
             {
                 curr.setImage(null);
+            }
+            else if (i == 5)
+            {
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
             }
             else
             {
@@ -464,7 +499,8 @@ public class Game extends Application
             }
             else
             {
-                curr.setImage(stockImage);
+                Card flipped = deck.placeDown();
+                curr.setImage(new Image(RES_PATH + flipped.getName() + ".png"));
             }
             hBox8.getChildren().add(curr);
             row7.add(curr);

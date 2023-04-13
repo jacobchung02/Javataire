@@ -67,4 +67,10 @@ class Card
 	{
 		return selected;
 	}
+
+	// Getter for name of Card. Used for drawing images.
+	String getName() 
+	{
+		return value.toString() + "_of_" + suit.toString().toLowerCase();
+	}
 }
